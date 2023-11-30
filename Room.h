@@ -9,16 +9,16 @@ using namespace std;
 
 class Room {
 public:
-    Room(char* &name, char* description, Item& item);
-    void setExit(char* &direction, Room* neighbor);
-    char* getDescription();
-    Room* getExit(char* &direction);
-    char* getName();
+    Room(const char* name, const char* description, Item item);
+    void setExit(const char* direction, Room* neighbor);
+    const char* getDescription();
+    Room* getExit(const char* direction);
+    const char* getName();
     void listItems();
 
 private:
-    char* description;
-    char* name;
+    const char* description;
+    const char* name;
     Room* exits[4];
     Item roomItem;
 };

@@ -7,13 +7,13 @@ using namespace std;
 
 class Item {
 public:
-    Item(char* &name, char* &description);
-    char* getName();
-    char* getDescription();
+    Item(const char* name, const char* description);
+    const char* getName();
+    const char* getDescription();
 
 private:
-    char* name;
-    char* description;
+    const char* name;
+    const char* description;
 };
 
 #endif // ITEM_H
