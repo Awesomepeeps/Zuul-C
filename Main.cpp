@@ -34,3 +34,13 @@ main (void) {
         }
     }
 }
+
+void printLocation(Room*) {
+    //cout << "You are in the " << currentRoom->getDescription() << "." << endl;
+    //currentRoom->listItems();
+    cout << "Exits: ";
+    //for (const auto& exit : currentRoom->getExits()) {
+    //    cout << exit.first << " ";
+    //}
+    cout << endl;
+}
