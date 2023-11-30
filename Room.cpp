@@ -4,13 +4,13 @@
 
 using namespace std;
 
-Room::Room(char* &name, char* description, Item& item) : name(name), description(description), roomItem(item) {
+Room::Room(const char* nametmp, const char* descriptiontmp, Item itemtmp) : name(nametmp), description(descriptiontmp), roomItem(itemtmp) {
     for (int i = 0; i < 4; ++i) {
         exits[i] = nullptr;
     }
 }
 
-void Room::setExit(char* &direction, Room* neighbor) {
+void Room::setExit(const char* direction, Room* neighbor) {
     if (strcmp(direction, "north") == 0) {
         exits[0] = neighbor;
     }
@@ -25,11 +25,11 @@ void Room::setExit(char* &direction, Room* neighbor) {
     }
 }
 
-char* Room::getDescription() {
+const char* Room::getDescription() {
     return description;
 }
 
-Room* Room::getExit(char* &direction) {
+Room* Room::getExit(const char* direction) {
     if (strcmp(direction, "north") == 0) {
         return exits[0];
     }
@@ -46,7 +46,7 @@ Room* Room::getExit(char* &direction) {
     return nullptr;
 }
 
-char* Room::getName() {
+const char* Room::getName() {
     return name;
 }
 

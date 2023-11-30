@@ -3,12 +3,12 @@
 
 using namespace std;
 
-Item::Item(char* &name, char* &description) : name(name), description(description) {}
+Item::Item(const char* nametmp, const char* descriptiontmp) : name(nametmp), description(descriptiontmp) {}
 
-char* Item::getName() {
+const char* Item::getName() {
     return name;
 }
 
-char* Item::getDescription() {
+const char* Item::getDescription() {
     return description;
 }
