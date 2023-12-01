@@ -1,3 +1,7 @@
+// Author: Nikaansh S.
+// Last Edited: 12/1/23
+// Zuul is a simple text-based game where can walk around to different room, pick up items, and try and beat the game!
+
 #include <iostream>
 #include <vector>
 #include <cstring>
