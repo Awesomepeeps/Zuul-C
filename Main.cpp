@@ -6,7 +6,7 @@
 using namespace std;
 
 void printLocation(Room* currentRoom);
-Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, bool winCondition);
+Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, bool* winCondition);
 
 main (void) {
     //variables that store all of the rooms, items, current locations, and a win condition
@@ -33,13 +33,13 @@ main (void) {
     rooms.push_back(Room("Restroom", "Wash your hands before you leave please")); //14
 
     //adding item to inventory
-    inventory.push_back(Item("key", "A key to turn on your car"));
+    inventory.push_back(Item("Key", "A key to turn on your car"));
 
     //setting items in rooms
     rooms[0].setItem(Item("Car", "This is how you leave the shopping mall"));
-    rooms[2].setItem(Item("Shopping Bag", "This is where you can put all the stuff you want to buy"));
+    rooms[2].setItem(Item("ShoppingBag", "This is where you can put all the stuff you want to buy"));
     rooms[7].setItem(Item("Clothes", "The clothes you want are here, but how will you afford them?"));
-    rooms[14].setItem(Item("Credit Card", "I wonder who left this here..."));
+    rooms[14].setItem(Item("CreditCard", "I wonder who left this here..."));
     rooms[11].setItem(Item("Snack", "A snack from the very best restaurant in the world, who can say no!"));
 
     //setting exits to rooms
@@ -84,6 +84,7 @@ main (void) {
 
     //loop until win or user quits
     while (true) {
+        cout << endl;
         printLocation(currentRoom);
         cout << "Enter a command (type 'quit' to exit or 'help' to get a list of commands): ";
         //a variable to store input from the user
@@ -94,16 +95,19 @@ main (void) {
             cout << "Thanks for playing! Next time, bring more money!" << endl;
             break;
         } else if (strcmp(command, "look") == 0) { //if user wants to know current location
+            cout << endl;
             printLocation(currentRoom);
         } else { //everything else is in the prosess commads function
-            currentRoom = processCommand(command, currentRoom, inventory, winCondition);
+            currentRoom = processCommand(command, currentRoom, inventory, &winCondition);
         }
 
         if (winCondition == true) { // if the condition is true end game
+            cout << endl;
             cout << "Congradulations! You have beat the game!" << endl;
             cout << "Using someone else's credit card, you bough the clothes you wanted." << endl;
             cout << "At least you bought your own snack... and didn't missplace your keys." << endl;
             cout << "Shame on you. Who knows what you do at home. Maybe you write programs that don't compile." << endl;
+            cout << endl;
             break;
         }
     }
@@ -133,13 +137,12 @@ void printLocation(Room* currentRoom) {
 }
 
 //computes the rest of the commands. It returns a room* so if user want to move to a new room and it exists then current room can be updated
-Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, bool winCondition) {
+Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, bool* winCondition) {
     if (strcmp(command, "north") == 0) { //if command was north
         Room* nextRoom = currentRoom->getExit("north");
         if (nextRoom != nullptr) { //checks room to the south is not null
             return nextRoom;
             cout << "You move north." << endl;
-            printLocation(currentRoom);
         } else {
             cout << "There is no exit to the north." << endl;
         }
@@ -149,7 +152,6 @@ Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, 
         if (nextRoom != nullptr) { //checks room to the south is not null
             return nextRoom;
             cout << "You move south." << endl;
-            printLocation(currentRoom);
         } else {
             cout << "There is no exit to the south." << endl;
         }
@@ -159,7 +161,6 @@ Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, 
         if (nextRoom != nullptr) { //checks room to the east is not null
             return nextRoom;
             cout << "You move east." << endl;
-            printLocation(currentRoom);
         } else {
             cout << "There is no exit to the east." << endl;
         }
@@ -169,7 +170,6 @@ Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, 
         if (nextRoom != nullptr) { //checks room to the west is not null
             return nextRoom;
             cout << "You move west." << endl;
-            printLocation(currentRoom);
         } else {
             cout << "There is no exit to the west." << endl;
          }
@@ -177,18 +177,18 @@ Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, 
     else if (strcmp(command, "pick") == 0) { //if command was pick
         //variable to store which item to be picked
         char* itemPick = new char(20);
-        cout << "What is the name of the item that you want to pick?" << endl;
+        cout << "What is the name of the item that you want to pick (follow capitalization and spaces)?" << endl;
         cin >> itemPick;
 
         //seperate conditions for clothes and car
-        if (strcmp(itemPick, "clothes") == 0) { //for clothes needs shopping bag and credit card
+        if (strcmp(itemPick, "Clothes") == 0) { //for clothes needs shopping bag and credit card
             bool hasBag = false;
             bool hasCard = false;
             for (Item x : inventory) { //goes through inventory
-                if (strcmp(x.getName(), "creditCard") == 0) {
+                if (strcmp(x.getName(), "CreditCard") == 0) {
                     hasCard = true;
                 }
-                else if (strcmp(x.getName(), "shoppingBag") == 0) {
+                else if (strcmp(x.getName(), "ShoppingBag") == 0) {
                     hasBag = true;
                 }
             }
@@ -196,30 +196,36 @@ Room* processCommand(char* command, Room* currentRoom, vector<Item> &inventory, 
                 inventory.push_back(currentRoom->getItem(itemPick));
             }
             else {
+                cout << endl;
+                cout << "How can you afford the clothes when your broke?" << endl;
+                cout << "Where you gonna store your clothes?" << endl;
                 hasCard = false;
                 hasBag = false;
             }
         }
-        else if (strcmp(itemPick, "car") == 0) { //needs clothes, snack, and keys for for car and to win
-            cout << "car" << endl;
+        else if (strcmp(itemPick, "Car") == 0) { //needs clothes, snack, and keys for for car and to win
             bool hasSnack = false;
             bool hasClothes = false;
             bool hasKey = false;
             for (Item x : inventory) { //goes through inventory
-                if (strcmp(x.getName(), "snack") == 0) {
+                if (strcmp(x.getName(), "Snack") == 0) {
                     hasSnack = true;
                 }
-                if (strcmp(x.getName(), "clothes") == 0) {
+                if (strcmp(x.getName(), "Clothes") == 0) {
                     hasClothes = true;
                 }
-                if (strcmp(x.getName(), "key") == 0) {
-                    hasKey == true;
+                if (strcmp(x.getName(), "Key") == 0) {
+                    hasKey = true;
                 }
             }
             if (hasClothes == true && hasSnack == true && hasKey == true) {
-                winCondition = true;
+                (*winCondition) = true;
             }
             else {
+                cout << endl;
+                cout << "You don't want to leave unless you have got some clothes" << endl;
+                cout << "You haven't gotten any food from the best restaurant either" << endl;
+                cout << "And don't tell me you dropped your keys" << endl;
                 hasKey = false;
                 hasClothes = false;
                 hasSnack = false;
