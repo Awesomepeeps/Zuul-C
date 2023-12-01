@@ -4,12 +4,15 @@
 
 using namespace std;
 
-Room::Room(const char* nametmp, const char* descriptiontmp, Item itemtmp) : name(nametmp), description(descriptiontmp), roomItem(itemtmp) {
+//sets variables that were passed in at creation
+Room::Room(const char* nametmp, const char* descriptiontmp) : name(nametmp), description(descriptiontmp) {
+    //sets all exits to null
     for (int i = 0; i < 4; ++i) {
         exits[i] = nullptr;
     }
 }
 
+//function to set the exits of a room
 void Room::setExit(const char* direction, Room* neighbor) {
     if (strcmp(direction, "north") == 0) {
         exits[0] = neighbor;
@@ -25,10 +28,12 @@ void Room::setExit(const char* direction, Room* neighbor) {
     }
 }
 
+//gets description of the room
 const char* Room::getDescription() {
     return description;
 }
 
+//gets the exit of the room
 Room* Room::getExit(const char* direction) {
     if (strcmp(direction, "north") == 0) {
         return exits[0];
@@ -42,14 +47,36 @@ Room* Room::getExit(const char* direction) {
     else if (strcmp(direction, "west") == 0) {
         return exits[3];
     }
-
     return nullptr;
 }
 
+//gets the name of the room
 const char* Room::getName() {
     return name;
 }
 
+//lists all items in the room
 void Room::listItems() {
-    cout << "Items in the room: " << roomItem.getName() << " - " << roomItem.getDescription() << endl;
+    cout << "Items in the room: " << endl;
+    for (Item x : roomItems) {
+        cout << x.getName() << ": " << x.getDescription() << endl;
+    }
+}
+
+//adds an item to the room
+void Room::setItem(Item newItem) {
+    roomItems.push_back(newItem);
+}
+
+//removes a item from the room and returns it
+Item Room::getItem(const char* itemName) {
+    int index = 0;
+    for (Item x : roomItems) {
+        if (strcmp(x.getName(), itemName) == 0) {
+            roomItems.erase(roomItems.begin()+index);
+            return x;
+        }
+        index++;
+    }
+    return Item("", "");
 }
